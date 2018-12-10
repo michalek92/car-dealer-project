@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,8 +25,13 @@ public class CarService {
                 .collect(Collectors.toList());
     }
 
-    public Car getById(Long id) {
-        return carRepository.findById(id).orElse(null);
+    public CarDto getById(Long id) {
+        CarDto dto = null;
+        final Optional<Car> carOptional = carRepository.findById(id);
+        if (carOptional.isPresent()) {
+            dto = toCarDto(carOptional.get());
+        }
+        return dto;
     }
 
     public CarDto createCar(CarDto carDto) {
