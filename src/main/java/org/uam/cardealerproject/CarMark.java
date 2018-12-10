@@ -1,11 +1,13 @@
 package org.uam.cardealerproject;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
 @Data
+@Builder
 public class CarMark {
 
     @Id

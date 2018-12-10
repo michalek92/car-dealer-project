@@ -1,5 +1,6 @@
 package org.uam.cardealerproject;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
+@Builder
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,5 +17,8 @@ public class Car {
     @ManyToOne
     private CarModel carModel;
 
-    private String color;
+    @Enumerated(EnumType.STRING)
+    private CarColor color;
+
+    private Long price;
 }
