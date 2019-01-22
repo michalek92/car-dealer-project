@@ -1,7 +1,9 @@
-package org.uam.cardealerproject;
+package org.uam.cardealerproject.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.uam.cardealerproject.dto.CarDto;
+import org.uam.cardealerproject.service.CarService;
 
 import java.util.List;
 

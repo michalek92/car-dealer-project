@@ -1,7 +1,12 @@
-package org.uam.cardealerproject;
+package org.uam.cardealerproject.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.uam.cardealerproject.dto.CarDto;
+import org.uam.cardealerproject.entity.Car;
+import org.uam.cardealerproject.entity.CarModel;
+import org.uam.cardealerproject.repo.CarModelRepository;
+import org.uam.cardealerproject.repo.CarRepository;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,7 +1,8 @@
-package org.uam.cardealerproject;
+package org.uam.cardealerproject.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import org.uam.cardealerproject.entity.CarColor;
 
 @Builder
 @Data

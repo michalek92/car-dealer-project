@@ -1,4 +1,4 @@
-package org.uam.cardealerproject;
+package org.uam.cardealerproject.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
