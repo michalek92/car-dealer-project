@@ -1,6 +1,7 @@
 package org.uam.cardealerproject.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.uam.cardealerproject.dto.CarDto;
 import org.uam.cardealerproject.service.CarService;
@@ -30,5 +31,16 @@ public class CarController {
     @PostMapping
     public CarDto createCar(@RequestBody CarDto car) {
         return carService.createCar(car);
+    }
+
+    @PutMapping("{id}")
+    public CarDto updateCar(@PathVariable Long id, @RequestBody CarDto car) {
+        return carService.updateCar(id, car);
+    }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Long id) {
+        carService.deleteById(id);
     }
 }
