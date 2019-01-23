@@ -63,6 +63,9 @@ public class CarService {
         car.setCarModel(carModel);
         car.setColor(carDto.getCarColor());
         car.setPrice(carDto.getPrice());
+        car.setUrl(carDto.getUrl());
+        car.setShortInfo(carDto.getShortInfo());
+        car.setLongInfo(carDto.getLongInfo());
         return toCarDto(car);
     }
 
@@ -78,6 +81,9 @@ public class CarService {
                 .carMarkName(car.getCarModel().getCarMark().getName())
                 .carModelName(car.getCarModel().getName())
                 .price(car.getPrice())
+                .url(car.getUrl())
+                .shortInfo(car.getShortInfo())
+                .longInfo(car.getLongInfo())
                 .build();
     }
 
@@ -86,6 +92,9 @@ public class CarService {
                 .price(dto.getPrice())
                 .color(dto.getCarColor())
                 .carModel(carModel)
+                .url(dto.getUrl())
+                .shortInfo(dto.getShortInfo())
+                .longInfo(dto.getLongInfo())
                 .build();
     }
 

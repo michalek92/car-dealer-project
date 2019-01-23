@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 
 @Entity
@@ -25,4 +26,12 @@ public class Car {
     private CarColor color;
 
     private Long price;
+
+    private String url;
+
+    @Size(max = 2000)
+    private String shortInfo;
+
+    @Size(max = 4000)
+    private String longInfo;
 }
