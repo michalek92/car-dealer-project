@@ -21,8 +21,8 @@ import axios from 'axios';
 
 const styles = theme => ({
   card: {
-      // width: 300,
-      // height: 300
+    // width: 300,
+    // height: 300
   },
   media: {
     height: 0,
@@ -52,22 +52,19 @@ class CarCard extends React.Component {
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
   };
-deleteCar = () =
->
-{
-    axios.delete('http://localhost:8080/cars/' + this.props.car.id, {crossdomain: true})
-        .then(res = > {
+  deleteCar = () => {
+    axios.delete('http://localhost:8080/cars/' + this.props.car.id, { crossdomain: true })
+      .then(res => {
         this.props.refreshCars();
-})
-.
-    catch(function (thrown) {
+      })
+      .catch(function (thrown) {
         if (axios.isCancel(thrown)) {
-            console.log('Request canceled', thrown.message);
+          console.log('Request canceled', thrown.message);
         } else {
-            // handle error
+          // handle error
         }
-    });
-}
+      });
+  }
   render() {
     const { classes } = this.props;
 
@@ -75,25 +72,10 @@ deleteCar = () =
       <Card className={classes.card}>
         <CardHeader
           avatar={
-              < Avatar
-    aria - label = "Recipe"
-    style = {
-    {
-        backgroundColor: this.props.car.carColor
-    }
-}>
-<
-    span
-    style = {
-    {
-        filter: this.props.car.carColor == 'WHITE' ? 'invert(50%)' : 'invert(0%)'
-    }
-}>
-    {
-        this.props.car.carMarkName[0]
-    }
-<
-    /span>
+            <Avatar aria-label="Recipe" style={{ backgroundColor: this.props.car.carColor }}>
+              <span style={{ filter: this.props.car.carColor == 'WHITE' ? 'invert(50%)' : 'invert(0%)' }}>
+                {this.props.car.carMarkName[0]}
+              </span>
             </Avatar>
           }
           action={
@@ -101,32 +83,25 @@ deleteCar = () =
               <MoreVertIcon />
             </IconButton>
           }
-    title = {this.props.car.carMarkName + ' ' + this.props.car.carModelName}
-    subheader = {"cena: " +this.props.car.price + '\n' + 'kolor: ' + this.props.car.carColor}
+          title={this.props.car.carMarkName + ' ' + this.props.car.carModelName}
+          subheader={"cena: " + this.props.car.price + '\n' + 'kolor: ' + this.props.car.carColor}
         />
         <CardMedia
           className={classes.media}
-    image = {this.props.car.url}
+          image={this.props.car.url}
           title="Paella dish"
         />
         <CardContent>
           <Typography component="p">
-        {this.props.car.shortInfo}
+            {this.props.car.shortInfo}
           </Typography>
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
           <IconButton aria-label="Add to favorites">
-        < EditIcon / >
+            <EditIcon />
           </IconButton>
           <IconButton aria-label="Share">
-        < DeleteIcon
-    onClick = {() =
->
-    {
-        this.deleteCar()
-    }
-}
-    />
+            <DeleteIcon onClick={() => { this.deleteCar() }} />
           </IconButton>
           <IconButton
             className={classnames(classes.expand, {
@@ -141,7 +116,7 @@ deleteCar = () =
         </CardActions>
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
           <CardContent>
-    {this.props.car.longInfo}
+            {this.props.car.longInfo}
           </CardContent>
         </Collapse>
       </Card>
