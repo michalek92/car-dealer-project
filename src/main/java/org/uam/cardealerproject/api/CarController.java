@@ -9,6 +9,7 @@ import org.uam.cardealerproject.service.CarService;
 import java.util.List;
 
 @RestController
+@CrossOrigin(maxAge = 3600)
 @RequestMapping("/cars")
 public class CarController {
     private final CarService carService;
