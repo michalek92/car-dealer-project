@@ -147,7 +147,11 @@ closeUpdateCarModal = () =
 }
     variant = "outlined"
     color = "inherit" > Wszystkie < /Button>
-        <Grid container alignItems="center" justify="center" spacing={0}>
+        < Grid
+    container
+    alignItems = "center"
+    justify = "center"
+    spacing = {0} >
 
 
         {
