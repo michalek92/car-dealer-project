@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.uam.cardealerproject.dto.CarDto;
 import org.uam.cardealerproject.entity.Car;
+import org.uam.cardealerproject.entity.CarMark;
 import org.uam.cardealerproject.entity.CarModel;
 import org.uam.cardealerproject.exception.NotExistingCarException;
 import org.uam.cardealerproject.exception.NotExistingCarModelException;
+import org.uam.cardealerproject.repo.CarMarkRepository;
 import org.uam.cardealerproject.repo.CarModelRepository;
 import org.uam.cardealerproject.repo.CarRepository;
 
@@ -21,11 +23,13 @@ import java.util.stream.Collectors;
 public class CarService {
     private final CarRepository carRepository;
     private final CarModelRepository carModelRepository;
+    private final CarMarkRepository carMarkRepository;
 
     @Autowired
-    public CarService(CarRepository carRepository, CarModelRepository carModelRepository) {
+    public CarService(CarRepository carRepository, CarModelRepository carModelRepository, CarMarkRepository carMarkRepository) {
         this.carRepository = carRepository;
         this.carModelRepository = carModelRepository;
+        this.carMarkRepository = carMarkRepository;
     }
 
     public List<CarDto> getAllCars() {
@@ -67,6 +71,22 @@ public class CarService {
         car.setShortInfo(carDto.getShortInfo());
         car.setLongInfo(carDto.getLongInfo());
         return toCarDto(car);
+    }
+
+    public List<String> getAllCarMarks() {
+        log.info("Getting all car marks");
+        return carMarkRepository.findAll()
+                .stream()
+                .map(CarMark::getName)
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getAllModelsByMarks(String markName) {
+        log.info("Getting car model for mark={}", markName);
+        return carModelRepository.findAllByCarMarkName(markName.toUpperCase())
+                .stream()
+                .map(CarModel::getName)
+                .collect(Collectors.toList());
     }
 
     public void deleteById(Long id) {
