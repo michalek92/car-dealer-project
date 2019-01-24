@@ -22,6 +22,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
 
 const styles = {
     root: {
@@ -43,7 +47,14 @@ class App extends Component {
         // Don't call this.setState() here!
         this.state = {
             cars: [],
-            showModalAddCar: false
+            showModalAddCar: false,
+            markInputValue: '',
+            modelInputValue: '',
+            priceInputValue: 0,
+            colorInputValue: '',
+            urlInputValue: '',
+            shorInfoValue: '',
+            longInfoValue: '',
         };
     }
     componentDidMount() {
@@ -64,18 +75,15 @@ class App extends Component {
     }
     createCar = () => {
         axios.post('http://localhost:8080/cars', {
-
-            id: 4,
-            url: 'https://www.mercedes-benz.pl/passengercars/_jcr_content/image.MQ6.2.2x.20180411152525.png',
-            shortInfo: 'testowa',
-            longInfo: 'testowa',
-            carModelName: 'CLA',
-            carMarkName: 'MERCEDES',
+            url: this.state.urlInputValue,
+            shortInfo: this.state.shorInfoValue,
+            longInfo: this.state.longInfoValue,
+            carModelName: this.state.modelInputValue,
+            carMarkName: this.state.markInputValue,
             carColor: 'YELLOW',
-            price: 2222
-
+            price: this.state.priceInputValue
         }).then(res => {
-            // this.setState({ showModalAddCar: false });
+            this.setState({ showModalAddCar: false });
             this.getCars();
         })
             .catch(function (thrown) {
@@ -87,40 +95,11 @@ class App extends Component {
             });
     }
     render() {
-        // let car = {
-        //     Mark: 'BMW',
-        //     Model: 'M3',
-        //     ID: 0,
-        //     Price: 60000,
-        //     Color: 'red',
-        //     Img: 'https://www.autoscout24.pl/assets/auto/images/model/bmw/bmw-m3/bmw-m3-l-01.jpg',
-        //     ShortInfo: 'Fusce a neque eu dui congue iaculis. Duis venenatis vulputate posuere. Nullam hendrerit congue est vel euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam libero augue, tempus et porttitor ac, porta at leo. Integer sed est eros. Maecenas eu facilisis diam. Mauris cursus ante a accumsan dapibus. Proin at dictum tortor. Cras eu risus at elit convallis ornare. Nunc ultrices porta tempor.',
-        //     FullInfo: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sagittis lectus ac quam venenatis faucibus. Suspendisse et arcu sem. Fusce in vehicula nulla. Pellentesque quis elit ipsum. Suspendisse volutpat rhoncus nulla at vestibulum. In in posuere erat, ut euismod nunc. Maecenas sed ipsum quis leo aliquet feugiat in vel est. Integer facilisis, enim id malesuada hendrerit, leo orci porta tortor, at mollis nunc dolor sed nulla. Donec id dui mauris. Nunc vel ipsum accumsan, lobortis ipsum eu, posuere enim. Vivamus mi justo, porttitor non condimentum vel, molestie a tellus. Nullam eu massa et mi blandit malesuada at sed diam. Donec pulvinar, nibh vel imperdiet commodo, justo magna condimentum sapien, sed imperdiet lectus arcu vel tortor. Aliquam elementum ornare ligula, ut cursus risus tincidunt eu. Vivamus mattis elementum iaculis.Fusce a neque eu dui congue iaculis. Duis venenatis vulputate posuere. Nullam hendrerit congue est vel euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam libero augue, tempus et porttitor ac, porta at leo. Integer sed est eros. Maecenas eu facilisis diam. Mauris cursus ante a accumsan dapibus. Proin at dictum tortor. Cras eu risus at elit convallis ornare. Nunc ultrices porta tempor. Praesent facilisis rutrum leo, eu euismod velit tempor lacinia. Phasellus elementum, lorem non suscipit facilisis, ipsum erat eleifend eros, blandit gravida est nibh sit amet ligula. Mauris placerat lorem id commodo imperdiet. Quisque nec eleifend urna. Maecenas eu augue id lacus posuere dapibus. Suspendisse in dolor eget nulla sagittis volutpat. In venenatis turpis eu nunc finibus, accumsan porta sem aliquet. Aliquam vestibulum egestas mi, a interdum nulla. Ut quis orci tortor. Pellentesque sit amet ipsum sit amet est lacinia varius vel et nibh.'
-        // }
-        // let car2 = {
-        //     Mark: 'Mercedes',
-        //     Model: 'GLC',
-        //     ID: 1,
-        //     Price: 80000,
-        //     Color: 'blue',
-        //     Img: 'https://www.mercedes-benz.ca/content/dam/mb-nafta/ca/myco/my19/glc/coupe/class-page/non-amg/MBCAN-2018-GLC-COUPE-CAROUSEL-TOP-2-3-02-DR.jpg',
-        //     ShortInfo: 'Fusce a neque eu dui congue iaculis. Duis venenatis vulputate posuere. Nullam hendrerit congue est vel euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam libero augue, tempus et porttitor ac, porta at leo. Integer sed est eros. Maecenas eu facilisis diam. Mauris cursus ante a accumsan dapibus. Proin at dictum tortor. Cras eu risus at elit convallis ornare. Nunc ultrices porta tempor.',
-        //     FullInfo: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sagittis lectus ac quam venenatis faucibus. Suspendisse et arcu sem. Fusce in vehicula nulla. Pellentesque quis elit ipsum. Suspendisse volutpat rhoncus nulla at vestibulum. In in posuere erat, ut euismod nunc. Maecenas sed ipsum quis leo aliquet feugiat in vel est. Integer facilisis, enim id malesuada hendrerit, leo orci porta tortor, at mollis nunc dolor sed nulla. Donec id dui mauris. Nunc vel ipsum accumsan, lobortis ipsum eu, posuere enim. Vivamus mi justo, porttitor non condimentum vel, molestie a tellus. Nullam eu massa et mi blandit malesuada at sed diam. Donec pulvinar, nibh vel imperdiet commodo, justo magna condimentum sapien, sed imperdiet lectus arcu vel tortor. Aliquam elementum ornare ligula, ut cursus risus tincidunt eu. Vivamus mattis elementum iaculis.Fusce a neque eu dui congue iaculis. Duis venenatis vulputate posuere. Nullam hendrerit congue est vel euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam libero augue, tempus et porttitor ac, porta at leo. Integer sed est eros. Maecenas eu facilisis diam. Mauris cursus ante a accumsan dapibus. Proin at dictum tortor. Cras eu risus at elit convallis ornare. Nunc ultrices porta tempor. Praesent facilisis rutrum leo, eu euismod velit tempor lacinia. Phasellus elementum, lorem non suscipit facilisis, ipsum erat eleifend eros, blandit gravida est nibh sit amet ligula. Mauris placerat lorem id commodo imperdiet. Quisque nec eleifend urna. Maecenas eu augue id lacus posuere dapibus. Suspendisse in dolor eget nulla sagittis volutpat. In venenatis turpis eu nunc finibus, accumsan porta sem aliquet. Aliquam vestibulum egestas mi, a interdum nulla. Ut quis orci tortor. Pellentesque sit amet ipsum sit amet est lacinia varius vel et nibh.'
-        // }
-        // let car3 = {
-        //     Mark: 'Nissan',
-        //     Model: 'Juke',
-        //     ID: 2,
-        //     Price: 80000,
-        //     Color: 'yellow',
-        //     Img: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/ireland/juke/f15/colorpickerassets/packshot_colorpicker_JUKE_326_medium.png.ximg.m_12_h.smart.png',
-        //     ShortInfo: 'Fusce a neque eu dui congue iaculis. Duis venenatis vulputate posuere. Nullam hendrerit congue est vel euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam libero augue, tempus et porttitor ac, porta at leo. Integer sed est eros. Maecenas eu facilisis diam. Mauris cursus ante a accumsan dapibus. Proin at dictum tortor. Cras eu risus at elit convallis ornare. Nunc ultrices porta tempor.',
-        //     FullInfo: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sagittis lectus ac quam venenatis faucibus. Suspendisse et arcu sem. Fusce in vehicula nulla. Pellentesque quis elit ipsum. Suspendisse volutpat rhoncus nulla at vestibulum. In in posuere erat, ut euismod nunc. Maecenas sed ipsum quis leo aliquet feugiat in vel est. Integer facilisis, enim id malesuada hendrerit, leo orci porta tortor, at mollis nunc dolor sed nulla. Donec id dui mauris. Nunc vel ipsum accumsan, lobortis ipsum eu, posuere enim. Vivamus mi justo, porttitor non condimentum vel, molestie a tellus. Nullam eu massa et mi blandit malesuada at sed diam. Donec pulvinar, nibh vel imperdiet commodo, justo magna condimentum sapien, sed imperdiet lectus arcu vel tortor. Aliquam elementum ornare ligula, ut cursus risus tincidunt eu. Vivamus mattis elementum iaculis.Fusce a neque eu dui congue iaculis. Duis venenatis vulputate posuere. Nullam hendrerit congue est vel euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam libero augue, tempus et porttitor ac, porta at leo. Integer sed est eros. Maecenas eu facilisis diam. Mauris cursus ante a accumsan dapibus. Proin at dictum tortor. Cras eu risus at elit convallis ornare. Nunc ultrices porta tempor. Praesent facilisis rutrum leo, eu euismod velit tempor lacinia. Phasellus elementum, lorem non suscipit facilisis, ipsum erat eleifend eros, blandit gravida est nibh sit amet ligula. Mauris placerat lorem id commodo imperdiet. Quisque nec eleifend urna. Maecenas eu augue id lacus posuere dapibus. Suspendisse in dolor eget nulla sagittis volutpat. In venenatis turpis eu nunc finibus, accumsan porta sem aliquet. Aliquam vestibulum egestas mi, a interdum nulla. Ut quis orci tortor. Pellentesque sit amet ipsum sit amet est lacinia varius vel et nibh.'
-        // }
+
         return (
             <div className={styles.root}>
                 <Grid container spacing={0}>
-                    <Grid item lg={12} md={12} xs={12}>
+                    <Grid direction="column" item lg={12} md={12} xs={12}>
                         <AppBar position="static">
                             <Toolbar>
                                 <IconButton className={styles.menuButton} color="inherit" aria-label="Menu">
@@ -128,15 +107,30 @@ class App extends Component {
                                 </IconButton>
                                 <Typography variant="h6" color="inherit" className={styles.grow}>
                                 </Typography>
-                                {/* <Button color="inherit">Login</Button> */}
+                                <Button onClick={() => { this.setState({ showModalAddCar: true }) }} color="inherit">Dodaj samochód</Button>
                             </Toolbar>
                         </AppBar>
                     </Grid>
                 </Grid>
-                <h2>Dostępne samochody:</h2>
-                <div style={{ marginLeft: '200px', marginRight: '200px' }}>
-                    <Grid container justify="center" spacing={0}>
 
+                <div style={{ marginLeft: '200px', marginRight: '200px' }}>
+                    <h2>Dostępne samochody:</h2>
+                    <Grid container alignItems="center" justify="center" spacing={0}>
+
+                        <Grid alignItems="center" item lg={3} md={6} xs={12}>
+                            <Card style={{ height: '450px' }} >
+                                <CardContent>
+                                    <center>
+
+
+                                        <Fab color="primary" style={{marginTop: '50%'}} aria-label="Add" >
+                                            <AddIcon onClick={() => { this.setState({ showModalAddCar: true }) }} />
+                                        </Fab>
+                                    </center>
+                                </CardContent>
+
+                            </Card>
+                        </Grid>
                         {this.state.cars.map((element) => {
                             return <Grid item lg={3} md={6} xs={12}>
                                 <CarCard
@@ -144,58 +138,90 @@ class App extends Component {
                                     refreshCars={() => { this.getCars() }} />
                             </Grid>
                         })}
-                        <Fab color="primary" aria-label="Add" >
-                            <AddIcon onClick={() => { this.createCar() }} />
-                        </Fab>
-                        {/* <Grid item lg={4} md={6} xs={12}>
-                        <CarCard
-                            car={car} />
-                    </Grid>
 
-                    <Grid item lg={4} md={6} xs={12}>
-                        <CarCard
-                            car={car2} />
-                    </Grid>
-                    <Grid item lg={4} md={6} xs={12}>
-                        <CarCard
-                            car={car} />
-                    </Grid>
 
-                    <Grid item lg={4} md={6} xs={12}>
-                        <CarCard
-                            car={car2} />
-                    </Grid>
-                    <Grid item lg={4} md={6} xs={12}>
-                        <CarCard
-                            car={car3} />
-                    </Grid> */}
                         <Dialog
                             open={this.state.showModalAddCar}
-                            // onClose={this.handleClose}
+                            onClose={() => { this.setState({ showModalAddCar: false }) }}
                             aria-labelledby="form-dialog-title"
                         >
-                            <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+                            <DialogTitle id="form-dialog-title">Dodawanie samochodu</DialogTitle>
                             <DialogContent>
                                 <DialogContentText>
-                                    To subscribe to this website, please enter your email address here. We will send
-                                    updates occasionally.
-            </DialogContentText>
+                                    Dodaj poniższe informacje i zatwierdź w celu dodania auta
+                                </DialogContentText>
                                 <TextField
                                     autoFocus
                                     margin="dense"
                                     id="name"
-                                    label="Email Address"
-                                    type="email"
+                                    label="Marka"
+                                    type="text"
+                                    value={this.state.markInputValue}
+                                    onChange={(event) => { this.setState({ markInputValue: event.target.value }) }}
+                                    fullWidth
+                                />
+                                <TextField
+                                    margin="dense"
+                                    id="name"
+                                    label="Model"
+                                    type="text"
+                                    value={this.state.modelInputValue}
+                                    onChange={(event) => { this.setState({ modelInputValue: event.target.value }) }}
+                                    fullWidth
+                                />
+                                <TextField
+                                    margin="dense"
+                                    id="name"
+                                    label="Cena"
+                                    type="number"
+                                    value={this.state.priceInputValue}
+                                    onChange={(event) => { this.setState({ priceInputValue: event.target.value }) }}
+                                    fullWidth
+                                />
+                                <TextField
+                                    margin="dense"
+                                    id="name"
+                                    label="Kolor"
+                                    type="color"
+                                    value={this.state.colorInputValue}
+                                    onChange={(event) => { this.setState({ colorInputValue: event.target.value }) }}
+                                    fullWidth
+                                />
+                                <TextField
+                                    margin="dense"
+                                    id="name"
+                                    label="Link do zdjęcia"
+                                    type="text"
+                                    value={this.state.urlInputValue}
+                                    onChange={(event) => { this.setState({ urlInputValue: event.target.value }) }}
+                                    fullWidth
+                                />
+                                <TextField
+                                    margin="dense"
+                                    id="name"
+                                    label="Krótka informacja"
+                                    type="text"
+                                    value={this.state.shorInfoValue}
+                                    onChange={(event) => { this.setState({ shorInfoValue: event.target.value }) }}
+                                    fullWidth
+                                />
+                                <TextField
+                                    margin="dense"
+                                    id="name"
+                                    label="Dluga informacja"
+                                    type="text"
+                                    value={this.state.longInfoValue}
+                                    onChange={(event) => { this.setState({ longInfoValue: event.target.value }) }}
                                     fullWidth
                                 />
                             </DialogContent>
                             <DialogActions>
-                                <Button onClick={this.handleClose} color="primary">
-                                    Cancel
-            </Button>
-                                <Button onClick={this.handleClose} color="primary">
-                                    Subscribe
-            </Button>
+                                <Button onClick={() => { this.setState({ showModalAddCar: false }) }} color="primary">
+                                    Anuluj
+                                </Button>
+                                <Button onClick={this.createCar} color="primary">
+                                    Dodaj
+                                </Button>
                             </DialogActions>
                         </Dialog>
 

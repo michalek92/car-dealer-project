@@ -22,7 +22,7 @@ import axios from 'axios';
 const styles = theme => ({
   card: {
     // width: 300,
-    // height: 300
+    // height: 450
   },
   media: {
     height: 0,
