@@ -13,19 +13,10 @@ import axios from 'axios';
 import logo from './img/logo.png';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-
-
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-
+import CreateCarModal from './CreateCarModal';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
+import UpdateCarModal from './UpdateCarModal';
 
 const styles = {
     root: {
@@ -48,18 +39,16 @@ class App extends Component {
         this.state = {
             cars: [],
             showModalAddCar: false,
-            markInputValue: '',
-            modelInputValue: '',
-            priceInputValue: 0,
-            colorInputValue: '',
-            urlInputValue: '',
-            shorInfoValue: '',
-            longInfoValue: '',
+            showModalUpdateCar: false,
+            actualSelectedCarData: null,
+            carFilterName: ''
         };
     }
+
     componentDidMount() {
         this.getCars();
     }
+
     getCars = () => {
         axios.get('http://localhost:8080/cars', { crossdomain: true })
             .then(res => {
@@ -73,27 +62,33 @@ class App extends Component {
                 }
             });
     }
-    createCar = () => {
-        axios.post('http://localhost:8080/cars', {
-            url: this.state.urlInputValue,
-            shortInfo: this.state.shorInfoValue,
-            longInfo: this.state.longInfoValue,
-            carModelName: this.state.modelInputValue,
-            carMarkName: this.state.markInputValue,
-            carColor: 'YELLOW',
-            price: this.state.priceInputValue
-        }).then(res => {
-            this.setState({ showModalAddCar: false });
-            this.getCars();
-        })
-            .catch(function (thrown) {
-                if (axios.isCancel(thrown)) {
-                    console.log('Request canceled', thrown.message);
-                } else {
-                    // handle error
-                }
-            });
+editCar = (carId) =
+>
+{
+    let actualSelectedCarData = this.state.cars.find(a = > a.id == carId
+)
+    ;
+    this.setState({actualSelectedCarData: actualSelectedCarData, showModalUpdateCar: true})
+}
+
+addNewClicked = () =
+>
+{
+    this.setState({showModalAddCar: true});
+}
+
+closeCreateCarModal = () =
+>
+{
+    this.setState({showModalAddCar: false});
+}
+
+closeUpdateCarModal = () =
+>
+{
+    this.setState({showModalUpdateCar: false})
     }
+
     render() {
 
         return (
@@ -107,7 +102,17 @@ class App extends Component {
                                 </IconButton>
                                 <Typography variant="h6" color="inherit" className={styles.grow}>
                                 </Typography>
-                                <Button onClick={() => { this.setState({ showModalAddCar: true }) }} color="inherit">Dodaj samochód</Button>
+        < Button
+    onClick = {() =
+>
+    {
+        this.setState({showModalAddCar: true})
+    }
+}
+    variant = "outlined"
+    color = "inherit" > < AddIcon / > Dodaj
+    samochód < /Button>
+
                             </Toolbar>
                         </AppBar>
                     </Grid>
@@ -115,118 +120,105 @@ class App extends Component {
 
                 <div style={{ marginLeft: '200px', marginRight: '200px' }}>
                     <h2>Dostępne samochody:</h2>
-                    <Grid container alignItems="center" justify="center" spacing={0}>
+    < Button
+    onClick = {() =
+>
+    {
+        this.setState({carFilterName: 'MERCEDES'})
+    }
+}
+    variant = "outlined"
+    color = "inherit" > Mercedes < /Button>
+        < Button
+    onClick = {() =
+>
+    {
+        this.setState({carFilterName: 'AUDI'})
+    }
+}
+    variant = "outlined"
+    color = "inherit" > Audi < /Button>
+        < Button
+    onClick = {() =
+>
+    {
+        this.setState({carFilterName: ''})
+    }
+}
+    variant = "outlined"
+    color = "inherit" > Wszystkie < /Button>
+        <Grid container alignItems="center" justify="center" spacing={0}>
+
+
+        {
+            this.state.cars.map((element) = > {
+                if(this.state.carFilterName != ''
+)
+    {
+        if (element.carMarkName != this.state.carFilterName) {
+            return null
+        }
+    }
+    return
+<
+    Grid
+    item
+    lg = {3}
+    md = {6}
+    xs = {12} >
+        < CarCard
+    car = {element}
+    refreshCars = {() =
+>
+    {
+        this.getCars()
+    }
+}
+    editCar = {this.editCar}
+    />
+    < /Grid>
+})
+}
 
                         <Grid alignItems="center" item lg={3} md={6} xs={12}>
                             <Card style={{ height: '450px' }} >
                                 <CardContent>
                                     <center>
-
-
-                                        <Fab color="primary" style={{marginTop: '50%'}} aria-label="Add" >
-                                            <AddIcon onClick={() => { this.setState({ showModalAddCar: true }) }} />
+    < Fab
+    onClick = {this.addNewClicked}
+    variant = "extended"
+    color = "primary"
+    style = {
+    {
+        marginTop: '50%'
+    }
+}
+    aria - label = "Add" >
+        < AddIcon / >
+        Dodaj
+    nowy
                                         </Fab>
                                     </center>
                                 </CardContent>
 
                             </Card>
                         </Grid>
-                        {this.state.cars.map((element) => {
-                            return <Grid item lg={3} md={6} xs={12}>
-                                <CarCard
-                                    car={element}
-                                    refreshCars={() => { this.getCars() }} />
-                            </Grid>
-                        })}
 
+    {
+        this.state.showModalAddCar && < CreateCarModal
+        showModalAddCar = {this.state.showModalAddCar}
+        closeCreateCarModal = {this.closeCreateCarModal}
+        getCars = {this.getCars}
+        />
+    }
 
-                        <Dialog
-                            open={this.state.showModalAddCar}
-                            onClose={() => { this.setState({ showModalAddCar: false }) }}
-                            aria-labelledby="form-dialog-title"
-                        >
-                            <DialogTitle id="form-dialog-title">Dodawanie samochodu</DialogTitle>
-                            <DialogContent>
-                                <DialogContentText>
-                                    Dodaj poniższe informacje i zatwierdź w celu dodania auta
-                                </DialogContentText>
-                                <TextField
-                                    autoFocus
-                                    margin="dense"
-                                    id="name"
-                                    label="Marka"
-                                    type="text"
-                                    value={this.state.markInputValue}
-                                    onChange={(event) => { this.setState({ markInputValue: event.target.value }) }}
-                                    fullWidth
-                                />
-                                <TextField
-                                    margin="dense"
-                                    id="name"
-                                    label="Model"
-                                    type="text"
-                                    value={this.state.modelInputValue}
-                                    onChange={(event) => { this.setState({ modelInputValue: event.target.value }) }}
-                                    fullWidth
-                                />
-                                <TextField
-                                    margin="dense"
-                                    id="name"
-                                    label="Cena"
-                                    type="number"
-                                    value={this.state.priceInputValue}
-                                    onChange={(event) => { this.setState({ priceInputValue: event.target.value }) }}
-                                    fullWidth
-                                />
-                                <TextField
-                                    margin="dense"
-                                    id="name"
-                                    label="Kolor"
-                                    type="color"
-                                    value={this.state.colorInputValue}
-                                    onChange={(event) => { this.setState({ colorInputValue: event.target.value }) }}
-                                    fullWidth
-                                />
-                                <TextField
-                                    margin="dense"
-                                    id="name"
-                                    label="Link do zdjęcia"
-                                    type="text"
-                                    value={this.state.urlInputValue}
-                                    onChange={(event) => { this.setState({ urlInputValue: event.target.value }) }}
-                                    fullWidth
-                                />
-                                <TextField
-                                    margin="dense"
-                                    id="name"
-                                    label="Krótka informacja"
-                                    type="text"
-                                    value={this.state.shorInfoValue}
-                                    onChange={(event) => { this.setState({ shorInfoValue: event.target.value }) }}
-                                    fullWidth
-                                />
-                                <TextField
-                                    margin="dense"
-                                    id="name"
-                                    label="Dluga informacja"
-                                    type="text"
-                                    value={this.state.longInfoValue}
-                                    onChange={(event) => { this.setState({ longInfoValue: event.target.value }) }}
-                                    fullWidth
-                                />
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={() => { this.setState({ showModalAddCar: false }) }} color="primary">
-                                    Anuluj
-                                </Button>
-                                <Button onClick={this.createCar} color="primary">
-                                    Dodaj
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
-
-
-
+    {
+        this.state.showModalUpdateCar && < UpdateCarModal
+        showModalUpdateCar = {this.state.showModalUpdateCar}
+        closeUpdateCarModal = {this.closeUpdateCarModal}
+        actualSelectedCarData = {this.state.actualSelectedCarData}
+        getCars = {this.getCars}
+        />}
                     </Grid>
                 </div>
             </div >
