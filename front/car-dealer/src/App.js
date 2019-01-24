@@ -62,31 +62,21 @@ class App extends Component {
                 }
             });
     }
-editCar = (carId) =
->
-{
-    let actualSelectedCarData = this.state.cars.find(a = > a.id == carId
-)
-    ;
-    this.setState({actualSelectedCarData: actualSelectedCarData, showModalUpdateCar: true})
-}
+    editCar = (carId) => {
+        let actualSelectedCarData = this.state.cars.find(a => a.id == carId);
+        this.setState({ actualSelectedCarData: actualSelectedCarData, showModalUpdateCar: true })
+    }
 
-addNewClicked = () =
->
-{
-    this.setState({showModalAddCar: true});
-}
+    addNewClicked = () => {
+        this.setState({ showModalAddCar: true });
+    }
 
-closeCreateCarModal = () =
->
-{
-    this.setState({showModalAddCar: false});
-}
+    closeCreateCarModal = () => {
+        this.setState({ showModalAddCar: false });
+    }
 
-closeUpdateCarModal = () =
->
-{
-    this.setState({showModalUpdateCar: false})
+    closeUpdateCarModal = () => {
+        this.setState({ showModalUpdateCar: false })
     }
 
     render() {
@@ -102,16 +92,7 @@ closeUpdateCarModal = () =
                                 </IconButton>
                                 <Typography variant="h6" color="inherit" className={styles.grow}>
                                 </Typography>
-        < Button
-    onClick = {() =
->
-    {
-        this.setState({showModalAddCar: true})
-    }
-}
-    variant = "outlined"
-    color = "inherit" > < AddIcon / > Dodaj
-    samochód < /Button>
+                                <Button onClick={() => { this.setState({ showModalAddCar: true }) }} variant="outlined" color="inherit"><AddIcon />Dodaj samochód</Button>
 
                             </Toolbar>
                         </AppBar>
@@ -120,87 +101,33 @@ closeUpdateCarModal = () =
 
                 <div style={{ marginLeft: '200px', marginRight: '200px' }}>
                     <h2>Dostępne samochody:</h2>
-    < Button
-    onClick = {() =
->
-    {
-        this.setState({carFilterName: 'MERCEDES'})
-    }
-}
-    variant = "outlined"
-    color = "inherit" > Mercedes < /Button>
-        < Button
-    onClick = {() =
->
-    {
-        this.setState({carFilterName: 'AUDI'})
-    }
-}
-    variant = "outlined"
-    color = "inherit" > Audi < /Button>
-        < Button
-    onClick = {() =
->
-    {
-        this.setState({carFilterName: ''})
-    }
-}
-    variant = "outlined"
-    color = "inherit" > Wszystkie < /Button>
-        < Grid
-    container
-    alignItems = "center"
-    justify = "center"
-    spacing = {0} >
+                    <Button onClick={() => { this.setState({ carFilterName: 'MERCEDES' }) }} variant="outlined" color="inherit">Mercedes</Button>
+                    <Button onClick={() => { this.setState({ carFilterName: 'AUDI' }) }} variant="outlined" color="inherit">Audi</Button>
+                    <Button onClick={() => { this.setState({ carFilterName: '' }) }} variant="outlined" color="inherit">Wszystkie</Button>
+                    <Grid container alignItems="center" justify="center" spacing={0}>
 
 
-        {
-            this.state.cars.map((element) = > {
-                if(this.state.carFilterName != ''
-)
-    {
-        if (element.carMarkName != this.state.carFilterName) {
-            return null
-        }
-    }
-    return
-<
-    Grid
-    item
-    lg = {3}
-    md = {6}
-    xs = {12} >
-        < CarCard
-    car = {element}
-    refreshCars = {() =
->
-    {
-        this.getCars()
-    }
-}
-    editCar = {this.editCar}
-    />
-    < /Grid>
-})
-}
+                        {this.state.cars.map((element) => {
+                            if (this.state.carFilterName != '') {
+                                if (element.carMarkName != this.state.carFilterName) {
+                                    return null
+                                }
+                            }
+                            return <Grid item lg={3} md={6} xs={12}>
+                                <CarCard
+                                    car={element}
+                                    refreshCars={() => { this.getCars() }}
+                                    editCar={this.editCar} />
+                            </Grid>
+                        })}
 
                         <Grid alignItems="center" item lg={3} md={6} xs={12}>
                             <Card style={{ height: '450px' }} >
                                 <CardContent>
                                     <center>
-    < Fab
-    onClick = {this.addNewClicked}
-    variant = "extended"
-    color = "primary"
-    style = {
-    {
-        marginTop: '50%'
-    }
-}
-    aria - label = "Add" >
-        < AddIcon / >
-        Dodaj
-    nowy
+                                        <Fab onClick={this.addNewClicked} variant="extended" color="primary" style={{ marginTop: '50%' }} aria-label="Add" >
+                                            <AddIcon />
+                                            Dodaj nowy
                                         </Fab>
                                     </center>
                                 </CardContent>
@@ -208,21 +135,19 @@ closeUpdateCarModal = () =
                             </Card>
                         </Grid>
 
-    {
-        this.state.showModalAddCar && < CreateCarModal
-        showModalAddCar = {this.state.showModalAddCar}
-        closeCreateCarModal = {this.closeCreateCarModal}
-        getCars = {this.getCars}
-        />
-    }
+                        {this.state.showModalAddCar && <CreateCarModal
+                            showModalAddCar={this.state.showModalAddCar}
+                            closeCreateCarModal={this.closeCreateCarModal}
+                            getCars={this.getCars}
+                        />
+                        }
 
-    {
-        this.state.showModalUpdateCar && < UpdateCarModal
-        showModalUpdateCar = {this.state.showModalUpdateCar}
-        closeUpdateCarModal = {this.closeUpdateCarModal}
-        actualSelectedCarData = {this.state.actualSelectedCarData}
-        getCars = {this.getCars}
-        />}
+                        {this.state.showModalUpdateCar && <UpdateCarModal
+                            showModalUpdateCar={this.state.showModalUpdateCar}
+                            closeUpdateCarModal={this.closeUpdateCarModal}
+                            actualSelectedCarData={this.state.actualSelectedCarData}
+                            getCars={this.getCars}
+                        />}
                     </Grid>
                 </div>
             </div >

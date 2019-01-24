@@ -72,20 +72,10 @@ class CarCard extends React.Component {
       <Card className={classes.card}>
         <CardHeader
           avatar={
-              < Avatar
-    aria - label = "Recipe"
-    style = {
-    {
-        backgroundColor: '#3f51b5'
-    }
-}>
-    {/* <span style={{ filter: this.props.car.carColor == 'WHITE' ? 'invert(50%)' : 'invert(0%)' }}> */
-    }
-    {
-        this.props.car.carMarkName[0]
-    }
-    {/* </span> */
-    }
+            <Avatar aria-label="Recipe" style={{ backgroundColor: '#3f51b5' }}>
+              {/* <span style={{ filter: this.props.car.carColor == 'WHITE' ? 'invert(50%)' : 'invert(0%)' }}> */}
+              {this.props.car.carMarkName[0]}
+              {/* </span> */}
             </Avatar>
           }
           action={
@@ -102,28 +92,13 @@ class CarCard extends React.Component {
           title="Paella dish"
         />
         <CardContent>
-              < Typography
-    style = {
-    {
-        overflow: 'auto', height
-    :
-        '50px'
-    }
-}
-    component = "p" >
+          <Typography style={{ overflow: 'auto', height: '50px' }} component="p">
             {this.props.car.shortInfo}
           </Typography>
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
           <IconButton aria-label="Add to favorites">
-        < EditIcon
-    onClick = {() =
->
-    {
-        this.props.editCar(this.props.car.id)
-    }
-}
-    />
+            <EditIcon onClick={() => { this.props.editCar(this.props.car.id) }} />
           </IconButton>
           <IconButton aria-label="Share">
             <DeleteIcon onClick={() => { this.deleteCar() }} />
