@@ -18,6 +18,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import axios from 'axios';
+import DirectionsCar from '@material-ui/icons/DirectionsCarTwoTone';
 
 const styles = theme => ({
   card: {
@@ -84,7 +85,13 @@ class CarCard extends React.Component {
             </IconButton>
           }
           title={this.props.car.carMarkName + ' ' + this.props.car.carModelName}
-          subheader={"cena: " + this.props.car.price + '\n' + 'kolor: ' + this.props.car.carColor}
+          subheader={
+            <span>
+              cena:  {this.props.car.price}  kolor:
+              <DirectionsCar style={{ color: this.props.car.carColor }} variant="outlined" />
+            </span>
+            // "cena: " + this.props.car.price}//'\n' + <DirectionsCar/>'kolor: ' + this.props.car.carColor}
+          }
         />
         <CardMedia
           className={classes.media}
@@ -103,6 +110,9 @@ class CarCard extends React.Component {
           <IconButton aria-label="Share">
             <DeleteIcon onClick={() => { this.deleteCar() }} />
           </IconButton>
+          {/* <IconButton>
+            <DirectionsCar style={{ color: this.props.car.carColor }} />
+          </IconButton> */}
           <IconButton
             className={classnames(classes.expand, {
               [classes.expandOpen]: this.state.expanded,

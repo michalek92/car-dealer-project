@@ -7,7 +7,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
 
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 
 class CreateCarModal extends Component {
@@ -23,11 +29,42 @@ class CreateCarModal extends Component {
             urlInputValue: '',
             shorInfoValue: '',
             longInfoValue: '',
+            marks: [],
+            models: [],
         };
     }
 
     componentDidMount() {
         //  this.getCars();
+        this.getMarks()
+    }
+
+    getMarks = () => {
+        axios.get('http://localhost:8080/cars/marks', { crossdomain: true })
+            .then(res => {
+                this.setState({ marks: res.data });
+            })
+            .catch(function (thrown) {
+                if (axios.isCancel(thrown)) {
+                    console.log('Request canceled', thrown.message);
+                } else {
+                    // handle error
+                }
+            });
+    }
+
+    getModels = (markSelected) => {
+        axios.get('http://localhost:8080/cars/models/' + markSelected, { crossdomain: true })
+            .then(res => {
+                this.setState({ models: res.data });
+            })
+            .catch(function (thrown) {
+                if (axios.isCancel(thrown)) {
+                    console.log('Request canceled', thrown.message);
+                } else {
+                    // handle error
+                }
+            });
     }
 
     createCar = () => {
@@ -37,7 +74,7 @@ class CreateCarModal extends Component {
             longInfo: this.state.longInfoValue,
             carModelName: this.state.modelInputValue,
             carMarkName: this.state.markInputValue,
-            carColor: 'YELLOW',
+            carColor: this.state.colorInputValue,
             price: this.state.priceInputValue
         }).then(res => {
             this.props.getCars();
@@ -65,7 +102,46 @@ class CreateCarModal extends Component {
                     <DialogContentText>
                         Dodaj poniższe informacje i zatwierdź w celu dodania auta
                 </DialogContentText>
-                    <TextField
+                    <FormControl >
+                        <InputLabel htmlFor="age-simple">Marka</InputLabel>
+                        <Select
+                            fullWidth
+                            value={this.state.markInputValue}
+                            onChange={(event) => {
+                                this.setState({ markInputValue: event.target.value });
+                                this.getModels(event.target.value)
+                            }}
+                            inputProps={{
+                                name: 'marka',
+                                id: 'age-simple',
+                            }}
+                        >
+                            {this.state.marks.map((mark, index) => {
+                                return <MenuItem value={mark}>{mark}</MenuItem>
+                            })}
+
+                        </Select>
+                    </FormControl>
+                    <FormControl >
+                        <InputLabel htmlFor="age-simple">Model</InputLabel>
+                        <Select
+                            style={{ width: '100%' }}
+                            fullWidth
+                            value={this.state.modelInputValue}
+                            onChange={(event) => { this.setState({ modelInputValue: event.target.value }) }}
+                            inputProps={{
+                                name: 'model',
+                                id: 'age-simple',
+                            }}
+                            disabled={this.state.models.length < 1 ? true : false}
+                        >
+                            {this.state.models.map((model, index) => {
+                                return <MenuItem value={model}>{model}</MenuItem>
+                            })}
+
+                        </Select>
+                    </FormControl>
+                    {/* <TextField
                         autoFocus
                         margin="dense"
                         id="name"
@@ -83,7 +159,7 @@ class CreateCarModal extends Component {
                         value={this.state.modelInputValue}
                         onChange={(event) => { this.setState({ modelInputValue: event.target.value }) }}
                         fullWidth
-                    />
+                    /> */}
                     <TextField
                         margin="dense"
                         id="name"

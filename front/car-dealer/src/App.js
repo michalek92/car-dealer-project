@@ -62,6 +62,7 @@ class App extends Component {
                 }
             });
     }
+
     editCar = (carId) => {
         let actualSelectedCarData = this.state.cars.find(a => a.id == carId);
         this.setState({ actualSelectedCarData: actualSelectedCarData, showModalUpdateCar: true })
@@ -100,10 +101,13 @@ class App extends Component {
                 </Grid>
 
                 <div style={{ marginLeft: '200px', marginRight: '200px' }}>
-                    <h2>Dostępne samochody:</h2>
+                    <h4>Filtry:</h4>
+
                     <Button onClick={() => { this.setState({ carFilterName: 'MERCEDES' }) }} variant="outlined" color="inherit">Mercedes</Button>
                     <Button onClick={() => { this.setState({ carFilterName: 'AUDI' }) }} variant="outlined" color="inherit">Audi</Button>
                     <Button onClick={() => { this.setState({ carFilterName: '' }) }} variant="outlined" color="inherit">Wszystkie</Button>
+
+                    <h2>Dostępne samochody:</h2>
                     <Grid container alignItems="center" justify="center" spacing={0}>
 
 

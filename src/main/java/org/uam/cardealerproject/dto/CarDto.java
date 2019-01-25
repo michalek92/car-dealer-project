@@ -14,7 +14,7 @@ public class CarDto {
     private Long id;
     private String carModelName;
     private String carMarkName;
-    private CarColor carColor;
+    private String carColor;
     private Long price;
     private String url;
     private String shortInfo;
