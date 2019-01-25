@@ -22,7 +22,6 @@ public class Car {
     @ManyToOne
     private CarModel carModel;
 
-    //@Enumerated(EnumType.STRING)
     private String color;
 
     private Long price;
