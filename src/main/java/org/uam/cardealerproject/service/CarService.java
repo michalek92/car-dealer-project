@@ -4,10 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.uam.cardealerproject.dto.CarDto;
+import org.uam.cardealerproject.dto.CarMarkDto;
+import org.uam.cardealerproject.dto.CarModelDto;
 import org.uam.cardealerproject.entity.Car;
 import org.uam.cardealerproject.entity.CarMark;
 import org.uam.cardealerproject.entity.CarModel;
 import org.uam.cardealerproject.exception.NotExistingCarException;
+import org.uam.cardealerproject.exception.NotExistingCarMarkException;
 import org.uam.cardealerproject.exception.NotExistingCarModelException;
 import org.uam.cardealerproject.repo.CarMarkRepository;
 import org.uam.cardealerproject.repo.CarModelRepository;
@@ -82,7 +85,7 @@ public class CarService {
     }
 
     public List<String> getAllModelsByMarks(String markName) {
-        log.info("Getting car model for mark={}", markName);
+        log.info("Getting car models for mark={}", markName);
         return carModelRepository.findAllByCarMarkName(markName.toUpperCase())
                 .stream()
                 .map(CarModel::getName)
@@ -92,6 +95,23 @@ public class CarService {
     public void deleteById(Long id) {
         log.info("Deleting car by id {id={}}", id);
         carRepository.deleteById(id);
+    }
+
+    public CarMarkDto createCarMark(CarMarkDto markDto) {
+        log.info("Creating car mark {}", markDto.getMark());
+        final CarMark carMark = carMarkRepository.save(CarMark.builder().name(markDto.getMark().toUpperCase()).build());
+        return new CarMarkDto(carMark.getName());
+    }
+
+    public CarModelDto createCarModel(String mark, CarModelDto modelDto) {
+        log.info("Creating car model {mark={} model={}}", mark, modelDto.getModel());
+        final CarMark carMark = carMarkRepository.findByName(mark.toUpperCase()).orElseThrow(() -> new NotExistingCarMarkException(mark));
+        final CarModel carModel = CarModel.builder()
+                .name(modelDto.getModel())
+                .carMark(carMark)
+                .build();
+        final CarModel savedCarModel = carModelRepository.save(carModel);
+        return new CarModelDto(savedCarModel.getName(), savedCarModel.getCarMark().getName());
     }
 
     private CarDto toCarDto(Car car) {
@@ -117,5 +137,4 @@ public class CarService {
                 .longInfo(dto.getLongInfo())
                 .build();
     }
-
 }

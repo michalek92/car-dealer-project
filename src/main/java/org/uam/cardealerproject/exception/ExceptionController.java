@@ -21,4 +21,10 @@ public class ExceptionController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
+    @ExceptionHandler(NotExistingCarMarkException.class)
+    public ResponseEntity handleNotExistingCarMarkException(NotExistingCarMarkException e) {
+        log.info("Handling exception: {}", e);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
 }
