@@ -24,7 +24,7 @@ public class CarMarkController {
         return carService.createCarMark(markDto);
     }
 
-    @PostMapping("/{mark}")
+    @PostMapping("/{mark}/models")
     public CarModelDto createCarModel(@PathVariable String mark, @RequestBody CarModelDto modelDto) {
         return carService.createCarModel(mark, modelDto);
     }
