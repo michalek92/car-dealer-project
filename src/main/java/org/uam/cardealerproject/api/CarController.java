@@ -44,14 +44,4 @@ public class CarController {
     public void deleteById(@PathVariable Long id) {
         carService.deleteById(id);
     }
-
-    @GetMapping("/marks")
-    public List<String> getAllCarMarks() {
-        return carService.getAllCarMarks();
-    }
-
-    @GetMapping("/models/{mark}")
-    public List<String> getAllModelsByMarks(@PathVariable String mark) {
-        return carService.getAllModelsByMarks(mark);
-    }
 }
