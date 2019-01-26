@@ -78,6 +78,8 @@ class App extends Component {
             newMarkInput: '',
             newModelInput: '',
             newModelMarkInputValue: '',
+            priceFrom: 0,
+            priceTo: '',
         };
     }
 
@@ -115,17 +117,21 @@ class App extends Component {
     }
 
     getModels = (markSelected) => {
-        axios.get('http://localhost:8080/marks/' + markSelected + '/models/', { crossdomain: true })
-            .then(res => {
-                this.setState({ models: res.data });
-            })
-            .catch(function (thrown) {
-                if (axios.isCancel(thrown)) {
-                    console.log('Request canceled', thrown.message);
-                } else {
-                    // handle error
-                }
-            });
+        if (markSelected == '') {
+            this.setState({ models: [] })
+        } else {
+            axios.get('http://localhost:8080/marks/' + markSelected + '/models/', { crossdomain: true })
+                .then(res => {
+                    this.setState({ models: res.data });
+                })
+                .catch(function (thrown) {
+                    if (axios.isCancel(thrown)) {
+                        console.log('Request canceled', thrown.message);
+                    } else {
+                        // handle error
+                    }
+                });
+        }
     }
 
     addNewMark = () => {
@@ -265,6 +271,27 @@ class App extends Component {
 
                                     </Select>
                                 </FormControl>
+                                <TextField
+                                    margin="dense"
+                                    id="name"
+                                    label="Cena od"
+                                    type="number"
+                                    value={this.state.priceFrom}
+                                    onChange={(event) => { this.setState({ priceFrom: event.target.value }) }}
+                                    fullWidth
+                                    variant="outlined"
+                                />
+                                <TextField
+                                    margin="dense"
+                                    id="name"
+                                    label="Cena do"
+                                    type="number"
+                                    value={this.state.priceTo}
+                                    onChange={(event) => { this.setState({ priceTo: event.target.value }) }}
+                                    fullWidth
+                                    variant="outlined"
+                                />
+
                             </ExpansionPanelDetails>
                         </ExpansionPanel>
                         <ExpansionPanel>
@@ -274,6 +301,8 @@ class App extends Component {
                             <ExpansionPanelDetails>
                                 <Grid container alignItems="center" justify="center" spacing={0}>
                                     <Grid item lg={12} md={12} xs={12}>
+                                        <h3>Dodaj markę:</h3>
+
                                         <TextField
                                             margin="dense"
                                             id="name"
@@ -287,6 +316,8 @@ class App extends Component {
                                         <Button fullWidth onClick={() => { this.addNewMark() }} variant="outlined" color="inherit"><AddIcon />Dodaj markę</Button>
                                     </Grid>
                                     <Grid item lg={12} md={12} xs={12}>
+                                        <h3>Dodaj model (należy najpierw wybrać model):</h3>
+
                                         <FormControl variant="filled" style={{ minWidth: '100%' }}>
 
                                             <InputLabel htmlFor="age-simple">Marka</InputLabel>
@@ -352,6 +383,12 @@ class App extends Component {
                                         }
                                     }
                                 }
+                            }
+                            if (this.state.priceFrom != '' && this.state.priceFrom > parseInt(element.price)) {
+                                return null
+                            }
+                            if (this.state.priceTo != '' && this.state.priceTo < parseInt(element.price)) {
+                                return null
                             }
                             return <Grid style={{ top: '3px' }} item lg={3} md={6} xs={12}>
                                 <CarCard

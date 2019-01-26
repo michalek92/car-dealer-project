@@ -21,13 +21,13 @@
  INSERT INTO CAR_MODEL (ID, CAR_MARK_ID, NAME) VALUES (11, 4, 'GOLF' );
  INSERT INTO CAR_MODEL (ID, CAR_MARK_ID, NAME) VALUES (12, 4, 'ARTEON' );
 
- INSERT INTO CAR_MODEL (ID, CAR_MARK_ID, NAME) VALUES (13, 4, '500' );
- INSERT INTO CAR_MODEL (ID, CAR_MARK_ID, NAME) VALUES (14, 4, '126P' );
- INSERT INTO CAR_MODEL (ID, CAR_MARK_ID, NAME) VALUES (15, 4, 'PUNTO' );
+ INSERT INTO CAR_MODEL (ID, CAR_MARK_ID, NAME) VALUES (13, 5, '500' );
+ INSERT INTO CAR_MODEL (ID, CAR_MARK_ID, NAME) VALUES (14, 5, '126P' );
+ INSERT INTO CAR_MODEL (ID, CAR_MARK_ID, NAME) VALUES (15, 5, 'PUNTO' );
 
- INSERT INTO CAR_MODEL (ID, CAR_MARK_ID, NAME) VALUES (16, 4, 'MONDEO' );
- INSERT INTO CAR_MODEL (ID, CAR_MARK_ID, NAME) VALUES (17, 4, 'FIESTA' );
- INSERT INTO CAR_MODEL (ID, CAR_MARK_ID, NAME) VALUES (18, 4, 'FOCUS' );
+ INSERT INTO CAR_MODEL (ID, CAR_MARK_ID, NAME) VALUES (16, 6, 'MONDEO' );
+ INSERT INTO CAR_MODEL (ID, CAR_MARK_ID, NAME) VALUES (17, 6, 'FIESTA' );
+ INSERT INTO CAR_MODEL (ID, CAR_MARK_ID, NAME) VALUES (18, 6, 'FOCUS' );
 
  INSERT INTO CAR (ID, CAR_MODEL_ID, COLOR, PRICE, URL, SHORT_INFO, LONG_INFO) VALUES (1, 1, '#000000', 150000, 'https://autow5minut.pl/wp-content/uploads/2017/08/mercedes_amg_cla45_381km_07.jpg', 'samochód osobowy klasy kompaktowej produkowany przez niemiecki koncern Mercedes-Benz w fabryce na Węgrzech od 2013 roku.','Auto zostało zaprezentowane w wersji produkcyjnej podczas targów motoryzacyjnych w Detroit w styczniu 2013 roku. Auto nie ma poprzednika, ani też bezpośredniego konkurenta. To sedan powstały na tej samej koncepcji co model CLS. Pojazd jest tak naprawdę wersją sedan trzeciej generacji A-klasy. Samochód powstał na bazie prototypu pod nazwą Mercedes-Benz Concept Style Coupé.
 Produkcję pojazdu rozpoczęto w węgierskiej fabryce w styczniu 2013 roku. W oficjalnej uroczystości uczestniczył m.in. premier Węgier Viktor Orbán oraz doktor Dieter Zetsche, prezes marki Mercedes-Benz.' );
@@ -55,5 +55,3 @@ Produkcję pojazdu rozpoczęto w węgierskiej fabryce w styczniu 2013 roku. W of
 
  INSERT INTO CAR (ID, CAR_MODEL_ID, COLOR, PRICE, URL, SHORT_INFO, LONG_INFO) VALUES (11, 7, '#e2bd00', 480000, 'https://c821b645c2c1bfaa7d44-968437da8b6582318a9696ac28dfde72.ssl.cf1.rackcdn.com/WBS4Y9C54JAG66842/37fdcfb42f46e5e986cda0bfdab0daa8.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque scelerisque condimentum eros in faucibus.',
                                                                                       'In ut leo nibh. Duis at lectus et mauris pretium finibus a pretium tellus. Etiam maximus ultricies urna, pellentesque posuere urna condimentum eget. Maecenas scelerisque lorem eget dolor fringilla egestas. Sed id est finibus, egestas purus et, dapibus arcu. Donec at nisl vel nibh elementum dignissim. Pellentesque nibh tellus, egestas quis gravida id, varius sit amet diam. In fermentum orci lacus, ac porttitor augue sodales nec. In at dictum libero. Pellentesque convallis sodales semper. Morbi auctor suscipit sem ac dapibus. Praesent ac pretium magna. Vivamus cursus ipsum eget metus feugiat, pretium gravida nisi sodales. Suspendisse eget cursus magna. Nullam et purus blandit, facilisis nisl bibendum, pellentesque turpis. Phasellus ut nibh quis sapien consectetur convallis.');
-
-

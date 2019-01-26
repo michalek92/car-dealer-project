@@ -74,9 +74,7 @@ class CarCard extends React.Component {
         <CardHeader
           avatar={
             <Avatar aria-label="Recipe" style={{ backgroundColor: '#3f51b5' }}>
-              {/* <span style={{ filter: this.props.car.carColor == 'WHITE' ? 'invert(50%)' : 'invert(0%)' }}> */}
               {this.props.car.carMarkName[0]}
-              {/* </span> */}
             </Avatar>
           }
           action={
@@ -88,9 +86,8 @@ class CarCard extends React.Component {
           subheader={
             <span>
               cena:  {this.props.car.price}  kolor:
-              <DirectionsCar style={{ color: this.props.car.carColor }} variant="outlined" />
+              <span style={{ backgroundColor: this.props.car.carColor, color: this.props.car.carColor, borderStyle: 'solid', borderColor: 'black', borderWidth: 'thin' }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             </span>
-            // "cena: " + this.props.car.price}//'\n' + <DirectionsCar/>'kolor: ' + this.props.car.carColor}
           }
         />
         <CardMedia
