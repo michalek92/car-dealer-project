@@ -20,7 +20,6 @@ class CreateCarModal extends Component {
 
     constructor(props) {
         super(props);
-        // Don't call this.setState() here!
         this.state = {
             markInputValue: '',
             modelInputValue: '',
@@ -40,7 +39,7 @@ class CreateCarModal extends Component {
     }
 
     getMarks = () => {
-        axios.get('http://localhost:8080/cars/marks', { crossdomain: true })
+        axios.get('http://localhost:8080/marks', { crossdomain: true })
             .then(res => {
                 this.setState({ marks: res.data });
             })
@@ -54,7 +53,7 @@ class CreateCarModal extends Component {
     }
 
     getModels = (markSelected) => {
-        axios.get('http://localhost:8080/cars/models/' + markSelected, { crossdomain: true })
+        axios.get('http://localhost:8080/marks/' + markSelected + '/models/', { crossdomain: true })
             .then(res => {
                 this.setState({ models: res.data });
             })
@@ -97,12 +96,12 @@ class CreateCarModal extends Component {
                 onClose={this.props.closeCreateCarModal}
                 aria-labelledby="form-dialog-title"
             >
-                <DialogTitle id="form-dialog-title">Dodawanie samochodu</DialogTitle>
+                <DialogTitle style={{ backgroundColor: '#3f51b5' }} id="form-dialog-title">Dodawanie samochodu</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         Dodaj poniższe informacje i zatwierdź w celu dodania auta
                 </DialogContentText>
-                    <FormControl >
+                    <FormControl style={{ minWidth: '250px', marginRight: '5px', marginLeft: '5px' }} >
                         <InputLabel htmlFor="age-simple">Marka</InputLabel>
                         <Select
                             fullWidth
@@ -122,7 +121,7 @@ class CreateCarModal extends Component {
 
                         </Select>
                     </FormControl>
-                    <FormControl >
+                    <FormControl style={{ minWidth: '250px', marginRight: '5px', marginLeft: '5px' }} >
                         <InputLabel htmlFor="age-simple">Model</InputLabel>
                         <Select
                             style={{ width: '100%' }}
@@ -141,25 +140,7 @@ class CreateCarModal extends Component {
 
                         </Select>
                     </FormControl>
-                    {/* <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Marka"
-                        type="text"
-                        value={this.state.markInputValue}
-                        onChange={(event) => { this.setState({ markInputValue: event.target.value }) }}
-                        fullWidth
-                    />
-                    <TextField
-                        margin="dense"
-                        id="name"
-                        label="Model"
-                        type="text"
-                        value={this.state.modelInputValue}
-                        onChange={(event) => { this.setState({ modelInputValue: event.target.value }) }}
-                        fullWidth
-                    /> */}
+
                     <TextField
                         margin="dense"
                         id="name"

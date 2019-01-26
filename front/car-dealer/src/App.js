@@ -18,6 +18,21 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import UpdateCarModal from './UpdateCarModal';
 
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import CardHeader from '@material-ui/core/CardHeader';
+
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import TextField from '@material-ui/core/TextField';
+
+
 const styles = {
     root: {
         flexGrow: 1,
@@ -31,6 +46,20 @@ const styles = {
     },
 };
 
+const styles2 = theme => ({
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    formControl: {
+        margin: theme.spacing.unit,
+        minWidth: 120,
+    },
+    selectEmpty: {
+        marginTop: theme.spacing.unit * 2,
+    },
+});
+
 class App extends Component {
 
     constructor(props) {
@@ -41,12 +70,20 @@ class App extends Component {
             showModalAddCar: false,
             showModalUpdateCar: false,
             actualSelectedCarData: null,
-            carFilterName: ''
+            carFilterName: '',
+            markInputValue: '',
+            modelInputValue: '',
+            marks: [],
+            models: [],
+            newMarkInput: '',
+            newModelInput: '',
+            newModelMarkInputValue: '',
         };
     }
 
     componentDidMount() {
         this.getCars();
+        this.getMarks();
     }
 
     getCars = () => {
@@ -54,6 +91,64 @@ class App extends Component {
             .then(res => {
                 this.setState({ cars: res.data });
             })
+            .catch(function (thrown) {
+                if (axios.isCancel(thrown)) {
+                    console.log('Request canceled', thrown.message);
+                } else {
+                    // handle error
+                }
+            });
+    }
+
+    getMarks = () => {
+        axios.get('http://localhost:8080/marks', { crossdomain: true })
+            .then(res => {
+                this.setState({ marks: res.data });
+            })
+            .catch(function (thrown) {
+                if (axios.isCancel(thrown)) {
+                    console.log('Request canceled', thrown.message);
+                } else {
+                    // handle error
+                }
+            });
+    }
+
+    getModels = (markSelected) => {
+        axios.get('http://localhost:8080/marks/' + markSelected + '/models/', { crossdomain: true })
+            .then(res => {
+                this.setState({ models: res.data });
+            })
+            .catch(function (thrown) {
+                if (axios.isCancel(thrown)) {
+                    console.log('Request canceled', thrown.message);
+                } else {
+                    // handle error
+                }
+            });
+    }
+
+    addNewMark = () => {
+        axios.post('http://localhost:8080/marks', {
+            mark: this.state.newMarkInput
+        }).then(res => {
+            this.getMarks();
+        })
+            .catch(function (thrown) {
+                if (axios.isCancel(thrown)) {
+                    console.log('Request canceled', thrown.message);
+                } else {
+                    // handle error
+                }
+            });
+    }
+
+    addNewModel = () => {
+        axios.post('http://localhost:8080/marks/' + this.state.newModelMarkInputValue + '/models', {
+            model: this.state.newModelInput
+        }).then(res => {
+
+        })
             .catch(function (thrown) {
                 if (axios.isCancel(thrown)) {
                     console.log('Request canceled', thrown.message);
@@ -93,7 +188,7 @@ class App extends Component {
                                 </IconButton>
                                 <Typography variant="h6" color="inherit" className={styles.grow}>
                                 </Typography>
-                                <Button onClick={() => { this.setState({ showModalAddCar: true }) }} variant="outlined" color="inherit"><AddIcon />Dodaj samochód</Button>
+                                {/* <Button onClick={() => { this.setState({ showModalAddCar: true }) }} variant="outlined" color="inherit"><AddIcon />Dodaj samochód</Button> */}
 
                             </Toolbar>
                         </AppBar>
@@ -101,23 +196,164 @@ class App extends Component {
                 </Grid>
 
                 <div style={{ marginLeft: '200px', marginRight: '200px' }}>
-                    <h4>Filtry:</h4>
 
-                    <Button onClick={() => { this.setState({ carFilterName: 'MERCEDES' }) }} variant="outlined" color="inherit">Mercedes</Button>
-                    <Button onClick={() => { this.setState({ carFilterName: 'AUDI' }) }} variant="outlined" color="inherit">Audi</Button>
-                    <Button onClick={() => { this.setState({ carFilterName: '' }) }} variant="outlined" color="inherit">Wszystkie</Button>
+                    {/* <Button fullWidth onClick={() => { this.setState({ showModalAddCar: true }) }} variant="outlined" color="inherit"><AddIcon />Dodaj samochód</Button> */}
 
+
+                    <br />
+                    <div style={{ width: '100%' }}>
+                        <ExpansionPanel>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+
+                                <Typography >Filtry</Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <FormControl variant="filled" style={{ minWidth: '250px', marginRight: '5px', marginLeft: '5px' }}>
+                                    <InputLabel htmlFor="age-simple">Marka</InputLabel>
+                                    <Select
+                                        fullWidth
+                                        value={this.state.markInputValue}
+                                        onChange={(event) => {
+                                            this.setState({ markInputValue: event.target.value, modelInputValue: '' });
+                                            this.getModels(event.target.value)
+                                        }}
+                                        inputProps={{
+                                            name: 'marka',
+                                            id: 'age-simple',
+                                        }}
+                                        input={
+                                            <OutlinedInput
+                                                labelWidth={this.state.labelWidth}
+                                                name="age"
+                                                id="outlined-age-simple"
+                                            />}
+                                    >
+                                        <MenuItem value="">
+                                            <em>None</em>
+                                        </MenuItem>
+                                        {this.state.marks.map((mark, index) => {
+                                            return <MenuItem value={mark}>{mark}</MenuItem>
+                                        })}
+
+                                    </Select>
+                                </FormControl>
+
+                                <FormControl variant="filled" style={{ minWidth: '250px', marginRight: '5px', marginLeft: '5px' }}>
+                                    <InputLabel htmlFor="age-simple">Model</InputLabel>
+                                    <Select
+                                        fullWidth
+                                        value={this.state.modelInputValue}
+                                        onChange={(event) => { this.setState({ modelInputValue: event.target.value }) }}
+                                        inputProps={{
+                                            name: 'model',
+                                            id: 'age-simple',
+                                        }}
+                                        disabled={this.state.models.length < 1 ? true : false}
+                                        input={
+                                            <OutlinedInput
+                                                labelWidth={this.state.labelWidth}
+                                                name="age"
+                                                id="outlined-age-simple"
+                                            />}
+                                    >
+                                        <MenuItem value="">
+                                            <em>None</em>
+                                        </MenuItem>
+                                        {this.state.models.map((model, index) => {
+                                            return <MenuItem value={model}>{model}</MenuItem>
+                                        })}
+
+                                    </Select>
+                                </FormControl>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                        <ExpansionPanel>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography>Dodawanie</Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <Grid container alignItems="center" justify="center" spacing={0}>
+                                    <Grid item lg={12} md={12} xs={12}>
+                                        <TextField
+                                            margin="dense"
+                                            id="name"
+                                            label="Nowa marka"
+                                            type="text"
+                                            value={this.state.newMarkInput}
+                                            onChange={(event) => { this.setState({ newMarkInput: event.target.value }) }}
+                                            fullWidth
+                                            variant="outlined"
+                                        />
+                                        <Button fullWidth onClick={() => { this.addNewMark() }} variant="outlined" color="inherit"><AddIcon />Dodaj markę</Button>
+                                    </Grid>
+                                    <Grid item lg={12} md={12} xs={12}>
+                                        <FormControl variant="filled" style={{ minWidth: '100%' }}>
+
+                                            <InputLabel htmlFor="age-simple">Marka</InputLabel>
+                                            <Select
+                                                fullWidth
+                                                value={this.state.newModelMarkInputValue}
+                                                onChange={(event) => {
+                                                    this.setState({ newModelMarkInputValue: event.target.value, modelInputValue: '' });
+                                                }}
+                                                inputProps={{
+                                                    name: 'marka',
+                                                    id: 'age-simple',
+                                                }}
+                                                input={
+                                                    <OutlinedInput
+                                                        labelWidth={this.state.labelWidth}
+                                                        name="age"
+                                                        id="outlined-age-simple"
+                                                    />}
+                                            >
+                                                <MenuItem value="">
+                                                    <em>None</em>
+                                                </MenuItem>
+                                                {this.state.marks.map((mark, index) => {
+                                                    return <MenuItem value={mark}>{mark}</MenuItem>
+                                                })}
+
+                                            </Select>
+                                        </FormControl>
+                                        <TextField
+                                            margin="dense"
+                                            id="name"
+                                            label="Nowy model"
+                                            type="text"
+                                            value={this.state.newModelInput}
+                                            onChange={(event) => { this.setState({ newModelInput: event.target.value }) }}
+                                            fullWidth
+                                            variant="outlined"
+                                        />
+
+
+                                        <Button disabled={this.state.newModelMarkInputValue == '' || this.state.newModelInput == ''} fullWidth onClick={() => { this.addNewModel() }} variant="outlined" color="inherit"><AddIcon />Dodaj model</Button>
+                                    </Grid>
+                                </Grid>
+
+
+
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                    </div>
                     <h2>Dostępne samochody:</h2>
                     <Grid container alignItems="center" justify="center" spacing={0}>
 
 
-                        {this.state.cars.map((element) => {
-                            if (this.state.carFilterName != '') {
-                                if (element.carMarkName != this.state.carFilterName) {
+                        {this.state.cars.map((element, index) => {
+                            if (this.state.markInputValue != '') {
+                                if (element.carMarkName != this.state.markInputValue) {
                                     return null
+                                } else {
+                                    if (this.state.modelInputValue != '') {
+                                        if (element.carModelName != this.state.modelInputValue) {
+                                            return null
+                                        }
+                                    }
                                 }
                             }
-                            return <Grid item lg={3} md={6} xs={12}>
+                            return <Grid style={{ top: '3px' }} item lg={3} md={6} xs={12}>
                                 <CarCard
                                     car={element}
                                     refreshCars={() => { this.getCars() }}
@@ -127,6 +363,7 @@ class App extends Component {
 
                         <Grid alignItems="center" item lg={3} md={6} xs={12}>
                             <Card style={{ height: '450px' }} >
+
                                 <CardContent>
                                     <center>
                                         <Fab onClick={this.addNewClicked} variant="extended" color="primary" style={{ marginTop: '50%' }} aria-label="Add" >
